@@ -1,6 +1,3 @@
-properties([
-    pipelineTriggers([githubPush()])
-])
 @Library('Shared')_
 pipeline{
     agent { label 'dev-server'}
