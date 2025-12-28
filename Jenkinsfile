@@ -55,17 +55,9 @@ pipeline {
         stage("deploy") {
             steps {
                 echo "this is deploying the code"
-                sh """
-                    docker stop notes-app-container 2>/dev/null || true
-                    docker rm notes-app-container 2>/dev/null || true
-                    docker run -d --name notes-app-container -p 8000:8000 notes-app:latest sh -c 'python3 manage.py migrate --noinput && python3 manage.py runserver 0.0.0.0:8000'
-                    sleep 5
-                    docker ps
-                    echo "=== Container Logs ==="
-                    docker logs notes-app-container
-                    echo "=== Access app at ==="
-                    echo "http://\$(hostname -I | awk '{print \$1}'):8000"
-                """
+                sh "docker-compose down || true"
+                sh "docker-compose up -d"
+                    
             }
         }
     }
